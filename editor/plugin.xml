@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="io.github.zshongyi.godt.GoSourceEditor"
+         name="Go Source Editor"
+         point="org.eclipse.ui.editors">
+      <editorContentTypeBinding 
+          contentTypeId="io.github.zshongyi.godt.gosourcefile"
+          editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+   </extension>
+    <extension 
+    	point="org.eclipse.core.contenttype.contentTypes"> 
+        <content-type
+            id="io.github.zshongyi.godt.gosourcefile"
+            name="Go"
+            file-extensions="go"
+            base-type="org.eclipse.core.runtime.text"
+            default-charset="UTF-8">
+        </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.registry.grammars">
+      <grammar
+            path="src/io/github/zshongyi/godt/editor/tm4e/grammar/go.tmLanguage.json"
+            scopeName="source.go">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="io.github.zshongyi.godt.gosourcefile"
+            scopeName="source.go">
+      </scopeNameContentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.languageconfiguration.languageConfigurations">
+      <languageConfiguration
+            contentTypeId="io.github.zshongyi.godt.gosourcefile"
+            path="src/io/github/zshongyi/godt/editor/tm4e/language-configurations/go.language-configuration.json">
+      </languageConfiguration>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.ui.snippets">
+      <snippet
+            name="Go Sample"
+            path="src/io/github/zshongyi/godt/editor/snippets/go/helloworld.go"
+            scopeName="source.go">
+      </snippet>
+   </extension>
+   <extension
+         point="org.eclipse.lsp4e.languageServer">
+      <server
+            class="io.github.zshongyi.godt.editor.lsp4e.server.GoplsStreamConnectionProvider"
+            id="io.github.zshongyi.godt.editor.lsp4e.server.gopls"
+            label="Go Language Server"
+            launcherBuilder="io.github.zshongyi.godt.editor.lsp4e.server.GoPatchLauncherBuilder">
+      </server>
+      <contentTypeMapping
+            contentType="io.github.zshongyi.godt.gosourcefile"
+            id="io.github.zshongyi.godt.editor.lsp4e.server.gopls">
+      </contentTypeMapping>
+   </extension>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+      <hyperlinkDetector
+            activate="true"
+            class="io.github.zshongyi.godt.editor.lsp4e.cilent.operations.declaration.GodtOpenDeclarationHyperlinkDetector"
+            description="Godt Gosource Editor Hyperlink Detector"
+            id="io.github.zshongyi.godt.editor.gosource.HyperlinkDetector"
+            name="GodtEditorHyperlinkDetector"
+            targetId="org.eclipse.ui.genericeditor.GenericEditor">
+      </hyperlinkDetector>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
+            id="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
+            name="GoDT">
+      </page>
+      <page
+            category="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
+            class="io.github.zshongyi.godt.editor.preference.GoplsPreferencePage"
+            id="io.github.zshongyi.godt.editor.preference.GoplsPreferencePage"
+            name="Gopls">
+      </page>
+   </extension>
+
+</plugin>
