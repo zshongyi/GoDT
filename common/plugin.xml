@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="io.github.zshongyi.godt.common.preference.CategoryPreferencePage"
+            id="io.github.zshongyi.godt.common.preference.CategoryPreferencePage"
+            name="GoDT">
+      </page>
+      <page
+            category="io.github.zshongyi.godt.common.preference.CategoryPreferencePage"
+            class="io.github.zshongyi.godt.common.preference.GoEnvPreferencePage"
+            id="io.github.zshongyi.godt.common.preference.GoEnvPreferencePage"
+            name="Go Env">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="io.github.zshongyi.godt.common.ui.console.GoToolChainConsolePatternMatchListener"
+            id="io.github.zshongyi.godt.common.ui.console.GoToolChainConsolePatternMatchListener"
+            regex="\..*\.go:\d+:\d+: .*: .*">
+         <enablement></enablement>
+      </consolePatternMatchListener>
+   </extension>
+</plugin>

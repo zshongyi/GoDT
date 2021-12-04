@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.github.zshongyi.godt.editor.preference;
+package io.github.zshongyi.godt.common.preference;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,26 +10,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import io.github.zshongyi.godt.editor.ui.Messages;
+import io.github.zshongyi.godt.common.ui.Messages;
 
 /**
  * @author zshongyi
  *
  */
-public class GoplsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GoEnvPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	/**
 	 * 
 	 */
-	public GoplsPreferencePage() {
+	public GoEnvPreferencePage() {
 		super(FieldEditorPreferencePage.GRID);
-		this.setPreferenceStore(GoplsPreferencePlugin.getPlugin().getPreferenceStore());
+		this.setPreferenceStore(GoEnvPreferencePlugin.getPlugin().getPreferenceStore());
 	}
 
 	@Override
@@ -41,8 +40,8 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 	@Override
 	protected void createFieldEditors() {
 
-		FileFieldEditor goplsPath = new FileFieldEditor(GoplsPreferenceConstants.GOPLS_PATH, Messages.goplsPathLabel,
-				true, getFieldEditorParent()) {
+		FileFieldEditor goPath = new FileFieldEditor(GoEnvPreferenceConstants.GO_PATH, Messages.goPathLabel, true,
+				getFieldEditorParent()) {
 
 			@Override
 			protected void fireValueChanged(String property, Object oldValue, Object newValue) {
@@ -56,12 +55,12 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 						BufferedReader bufferedReader = new BufferedReader(
 								new InputStreamReader(process.getInputStream()));
 						String firstLine = bufferedReader.readLine();
-						Pattern pattern = Pattern.compile("^golang.org/x/tools/gopls v([0-9]+\\.){2}[0-9]+");
+						Pattern pattern = Pattern.compile("^go version go(\\d+\\.){2}\\d+ .*");
 						Matcher matcher = pattern.matcher(firstLine);
 						if (matcher.find()) {
 							setValid(true);
 						} else {
-							MessageDialog.openError(null, "Illegal File", "Not an available gopls binary file.");
+							MessageDialog.openError(null, "Illegal File", "Not an available go binary file.");
 							setValid(false);
 						}
 					} catch (IOException e) {
@@ -76,20 +75,16 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 			}
 		};
 
-		goplsPath.setFileExtensions(new String[] { getBinaryName() });
-		this.addField(goplsPath);
-
-		BooleanFieldEditor enableGodtDeclaration = new BooleanFieldEditor(GoplsPreferenceConstants.GODT_DECLARATION,
-				Messages.enableGodtDeclarationLabel, getFieldEditorParent());
-		this.addField(enableGodtDeclaration);
+		goPath.setFileExtensions(new String[] { getBinaryName() });
+		this.addField(goPath);
 
 	}
 
 	public static String getBinaryName() {
-		String goplsBinary = "gopls";
+		String goplsBinary = "go";
 		String os = System.getProperty("os.name");
 		if (os.toLowerCase().startsWith("win")) {
-			goplsBinary = "gopls.exe";
+			goplsBinary = "go.exe";
 		}
 		return goplsBinary;
 	}

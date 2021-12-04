@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="GodtBuilder"
+         name="GoDT Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="io.github.zshongyi.godt.project.builder.GodtBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="GodtNature"
+         name="GoDT Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="io.github.zshongyi.godt.project.builder.GodtNature">
+         </run>
+      </runtime>
+      <builder
+            id="io.github.zshongyi.godt.project.GodtBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="io.github.zshongyi.godt.project.GodtNature.category"
+            name="GoDT Project Nature commands">
+      </category>
+      <command
+            categoryId="io.github.zshongyi.godt.project.GodtNature.category"
+            defaultHandler="io.github.zshongyi.godt.project.builder.AddRemoveGodtNatureHandler"
+            id="io.github.zshongyi.godt.project.addRemoveGodtNature"
+            name="Add/RemoveGoDT Project Nature">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               label="Disable Sample builder"
+               commandId="io.github.zshongyi.godt.project.addRemoveGodtNature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="io.github.zshongyi.godt.project.GodtNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               label="Enable Sample builder"
+               commandId="io.github.zshongyi.godt.project.addRemoveGodtNature"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <not>
+                           <test
+                                 property="org.eclipse.core.resources.projectNature"
+                                 value="io.github.zshongyi.godt.project.GodtNature">
+                           </test>
+                        </not>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="xmlProblem"
+         name="XML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="src/io/github/zshongyi/godt/project/ui/icons/go-nature.png"
+            id="io.github.zshongyi.godt.project.natureimage"
+            natureId="io.github.zshongyi.godt.project.GodtNature">
+      </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="io.github.zshongyi.godt.project.wizards.category"
+            name="Golang">
+      </category>
+      <wizard
+              canFinishEarly="false"
+              category="io.github.zshongyi.godt.project.wizards.category"
+              class="io.github.zshongyi.godt.project.wizards.GoModProjectWizard"
+              hasPages="true"
+              icon="src/io/github/zshongyi/godt/project/ui/icons/new-go-project.png"
+              id="io.github.zshongyi.godt.project.wizards.GoModProject"
+              name="Go Mod Project"
+              project="true">
+              <description>New go project with go mod init</description>
+      </wizard>
+   </extension>
+
+</plugin>

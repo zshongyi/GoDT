@@ -73,16 +73,18 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
-            id="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
-            name="GoDT">
-      </page>
-      <page
-            category="io.github.zshongyi.godt.editor.preference.CategoryPreferencePage"
+            category="io.github.zshongyi.godt.common.preference.CategoryPreferencePage"
             class="io.github.zshongyi.godt.editor.preference.GoplsPreferencePage"
             id="io.github.zshongyi.godt.editor.preference.GoplsPreferencePage"
             name="Gopls">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.icons">
+      <icon
+            contentType="io.github.zshongyi.godt.gosourcefile"
+            icon="src/io/github/zshongyi/godt/editor/ui/icons/goSourceEditorIcon.png">
+      </icon>
    </extension>
 
 </plugin>

@@ -1,7 +1,8 @@
+package io.github.zshongyi.godt.common.preference;
 /**
  * 
  */
-package io.github.zshongyi.godt.editor.preference;
+
 
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.internal.dialogs.EmptyPreferencePage;
