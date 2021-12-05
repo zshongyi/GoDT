@@ -1,7 +1,7 @@
 /**
  * 
  */
-package io.github.zshongyi.godt.common.ui.console;
+package io.github.zshongyi.godt.common.ui.consoles;
 
 import java.io.File;
 

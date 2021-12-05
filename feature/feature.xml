@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="io.github.zshongyi.godt.feature"
-      label="Feature"
-      version="0.2.0.qualifier">
+      label="GoDT"
+      version="0.3.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -32,6 +32,13 @@
 
    <plugin
          id="io.github.zshongyi.godt.project"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.zshongyi.godt.launch"
          download-size="0"
          install-size="0"
          version="0.0.0"

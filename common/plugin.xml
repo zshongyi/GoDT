@@ -18,10 +18,28 @@
    <extension
          point="org.eclipse.ui.console.consolePatternMatchListeners">
       <consolePatternMatchListener
-            class="io.github.zshongyi.godt.common.ui.console.GoToolChainConsolePatternMatchListener"
+            class="io.github.zshongyi.godt.common.ui.consoles.GoToolChainConsolePatternMatchListener"
             id="io.github.zshongyi.godt.common.ui.console.GoToolChainConsolePatternMatchListener"
             regex="\..*\.go:\d+:\d+: .*: .*">
          <enablement></enablement>
       </consolePatternMatchListener>
+   </extension>
+      <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegateDescription="Launch golang application"
+            delegateName="Golang Launcher"
+            id="io.github.zshongyi.godt.common.LocalApplicationLaunchConfigurationType"
+            name="Golang Application"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="io.github.zshongyi.godt.common.LocalApplicationLaunchConfigurationType"
+            icon="src/io/github/zshongyi/godt/common/ui/icons/go.ico"
+            id="io.github.zshongyi.godt.common.LocalApplicationLaunchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
    </extension>
 </plugin>

@@ -25,7 +25,7 @@ public class GoModProjectWizard extends BasicNewProjectResourceWizard {
 		super.addPages();
 		IWizardPage mainPage = this.getPage("basicNewProjectPage");
 		mainPage.setTitle("Create a Go Mod Project");
-		mainPage.setImageDescriptor(ImageDescriptor.createFromFile(Icons.class, Icons.GO_PROJECT));
+		mainPage.setImageDescriptor(ImageDescriptor.createFromFile(Icons.class, Icons.GO_PROJECT_LARGE));
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 
 import io.github.zshongyi.godt.common.preference.GoEnvPreferenceConstants;
 import io.github.zshongyi.godt.common.preference.GoEnvPreferencePlugin;
-import io.github.zshongyi.godt.common.ui.console.GoToolChainConsole;
+import io.github.zshongyi.godt.common.ui.consoles.GoToolChainConsole;
 
 /**
  * @author zshongyi
