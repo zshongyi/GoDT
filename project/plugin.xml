@@ -107,7 +107,7 @@
    <extension
          point="org.eclipse.ui.ide.projectNatureImages">
       <image
-            icon="src/io/github/zshongyi/godt/project/ui/icons/go-nature.png"
+            icon="icons/go-nature.png"
             id="io.github.zshongyi.godt.project.natureimage"
             natureId="io.github.zshongyi.godt.project.GodtNature">
       </image>
@@ -123,7 +123,7 @@
               category="io.github.zshongyi.godt.project.wizards.category"
               class="io.github.zshongyi.godt.project.wizards.GoModProjectWizard"
               hasPages="true"
-              icon="src/io/github/zshongyi/godt/project/ui/icons/new-go-project.png"
+              icon="icons/new-go-project.png"
               id="io.github.zshongyi.godt.project.wizards.GoModProject"
               name="Go Mod Project"
               project="true">

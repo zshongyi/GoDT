@@ -23,7 +23,7 @@
    <extension
          point="org.eclipse.tm4e.registry.grammars">
       <grammar
-            path="src/io/github/zshongyi/godt/editor/tm4e/grammar/go.tmLanguage.json"
+            path="grammars/go.tmLanguage.json"
             scopeName="source.go">
       </grammar>
       <scopeNameContentTypeBinding
@@ -35,7 +35,7 @@
          point="org.eclipse.tm4e.languageconfiguration.languageConfigurations">
       <languageConfiguration
             contentTypeId="io.github.zshongyi.godt.gosourcefile"
-            path="src/io/github/zshongyi/godt/editor/tm4e/language-configurations/go.language-configuration.json">
+            path="language-configurations/go.language-configuration.json">
       </languageConfiguration>
    </extension>
    <extension
@@ -83,7 +83,7 @@
          point="org.eclipse.ui.genericeditor.icons">
       <icon
             contentType="io.github.zshongyi.godt.gosourcefile"
-            icon="src/io/github/zshongyi/godt/editor/ui/icons/goSourceEditorIcon.png">
+            icon="icons/goSourceEditorIcon.png">
       </icon>
    </extension>
 

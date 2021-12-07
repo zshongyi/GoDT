@@ -38,7 +38,7 @@
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="io.github.zshongyi.godt.common.LocalApplicationLaunchConfigurationType"
-            icon="src/io/github/zshongyi/godt/common/ui/icons/go.ico"
+            icon="icons/go.ico"
             id="io.github.zshongyi.godt.common.LocalApplicationLaunchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
