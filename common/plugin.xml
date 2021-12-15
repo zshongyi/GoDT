@@ -15,15 +15,6 @@
             name="Go Env">
       </page>
    </extension>
-   <extension
-         point="org.eclipse.ui.console.consolePatternMatchListeners">
-      <consolePatternMatchListener
-            class="io.github.zshongyi.godt.common.ui.consoles.GoToolChainConsolePatternMatchListener"
-            id="io.github.zshongyi.godt.common.ui.console.GoToolChainConsolePatternMatchListener"
-            regex="\..*\.go:\d+:\d+: .*: .*">
-         <enablement></enablement>
-      </consolePatternMatchListener>
-   </extension>
       <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType

@@ -41,16 +41,15 @@ public class GoToolChainConsole {
 		MessageConsole console = new MessageConsole(GO_TOOL_CHAIN_CONSOLE, null);
 		consoleManager.addConsoles(new IConsole[] { console });
 		console.setConsoleAutoScrollLock(true);
+		console.addPatternMatchListener(new GoToolChainConsolePatternMatchListener());
 		return console;
 	}
 
 	private static MessageConsoleStream getConsoleStdout() {
 		if (consoleStdout == null || consoleStdout.isClosed()) {
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					consoleStdout = findConsole().newMessageStream();
-					consoleStdout.setColor(new Color(0, 0, 0));
-				}
+			Display.getDefault().syncExec(() -> {
+				consoleStdout = findConsole().newMessageStream();
+				consoleStdout.setColor(new Color(0, 0, 0));
 			});
 		}
 		return consoleStdout;
@@ -58,12 +57,10 @@ public class GoToolChainConsole {
 
 	private static MessageConsoleStream getConsoleStdErr() {
 		if (consoleStderr == null || consoleStderr.isClosed()) {
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					consoleStderr = findConsole().newMessageStream();
-					consoleStderr.setColor(new Color(255, 0, 0));
-					consoleStderr.setFontStyle(SWT.BOLD);
-				}
+			Display.getDefault().syncExec(() -> {
+				consoleStderr = findConsole().newMessageStream();
+				consoleStderr.setColor(new Color(255, 0, 0));
+				consoleStderr.setFontStyle(SWT.BOLD);
 			});
 		}
 		return consoleStderr;

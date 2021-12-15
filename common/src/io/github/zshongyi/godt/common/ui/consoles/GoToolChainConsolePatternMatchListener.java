@@ -14,7 +14,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IHyperlink;
-import org.eclipse.ui.console.IPatternMatchListenerDelegate;
+import org.eclipse.ui.console.IPatternMatchListener;
 import org.eclipse.ui.console.PatternMatchEvent;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.ide.IDE;
@@ -24,8 +24,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * @author zshongyi
  *
  */
-public class GoToolChainConsolePatternMatchListener implements IPatternMatchListenerDelegate {
+public class GoToolChainConsolePatternMatchListener implements IPatternMatchListener {
 
+	private static final String MATCH_REGEX_PATTERN = "\\..*\\.go:\\d+:\\d+: .*: .*";
 	private TextConsole console;
 
 	@Override
@@ -64,7 +65,7 @@ public class GoToolChainConsolePatternMatchListener implements IPatternMatchList
 
 			IHyperlink hyperlink = makeHyperlink(targetFile, lineNumber);
 			this.console.addHyperlink(hyperlink, event.getOffset(), length);
-		} catch (BadLocationException exception) {
+		} catch (NumberFormatException | BadLocationException exception) {
 			exception.printStackTrace();
 		}
 
@@ -110,6 +111,21 @@ public class GoToolChainConsolePatternMatchListener implements IPatternMatchList
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getPattern() {
+		return MATCH_REGEX_PATTERN;
+	}
+
+	@Override
+	public int getCompilerFlags() {
+		return 0;
+	}
+
+	@Override
+	public String getLineQualifier() {
+		return null;
 	}
 
 }
