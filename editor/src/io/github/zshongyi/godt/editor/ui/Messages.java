@@ -8,6 +8,7 @@ public class Messages extends NLS {
 	public static String openReturnTypeLabel;
 	public static String enableGodtDeclarationLabel;
 	public static String goplsPathLabel;
+	public static String addGoPathBeforeRunGopls;
 
 	static {
 		NLS.initializeMessages("io.github.zshongyi.godt.editor.ui.messages", Messages.class); //$NON-NLS-1$

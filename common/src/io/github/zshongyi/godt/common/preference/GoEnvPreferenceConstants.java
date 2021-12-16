@@ -9,6 +9,6 @@ package io.github.zshongyi.godt.common.preference;
  */
 public class GoEnvPreferenceConstants {
 
-	public static final String GO_PATH = "GoPath";
+	public static final String GO_BINARY_PATH = "GoBinaryPath";
 
 }

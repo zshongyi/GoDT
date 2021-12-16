@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.119.100",
  org.eclipse.core.filesystem;bundle-version="1.9.100",
  org.eclipse.debug.core;bundle-version="3.18.200",
  org.eclipse.debug.ui;bundle-version="3.15.100"
-Export-Package: io.github.zshongyi.godt.common.tooling
+Export-Package: io.github.zshongyi.godt.common.preference,
+ io.github.zshongyi.godt.common.tooling
 Import-Package: org.eclipse.ui.texteditor

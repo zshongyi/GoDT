@@ -28,7 +28,7 @@ public class GoPatchLauncherBuilder extends Builder<LanguageServer> {
 					workspaceFolder.setUri(newUri);
 				}
 			}
-
+			// FIXME: ...lsp4j.jsonrpc.ResponseErrorException: start pos is not valid
 			consumer.consume(message);
 		});
 	}

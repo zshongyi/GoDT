@@ -40,8 +40,8 @@ public class GoEnvPreferencePage extends FieldEditorPreferencePage implements IW
 	@Override
 	protected void createFieldEditors() {
 
-		FileFieldEditor goPath = new FileFieldEditor(GoEnvPreferenceConstants.GO_PATH, Messages.goPathLabel, true,
-				getFieldEditorParent()) {
+		FileFieldEditor goPath = new FileFieldEditor(GoEnvPreferenceConstants.GO_BINARY_PATH, Messages.goPathLabel,
+				true, getFieldEditorParent()) {
 
 			@Override
 			protected void fireValueChanged(String property, Object oldValue, Object newValue) {

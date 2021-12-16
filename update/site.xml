@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/io.github.zshongyi.godt.feature_0.3.1.202112152249.jar" id="io.github.zshongyi.godt.feature" version="0.3.1.202112152249">
+   <feature url="features/io.github.zshongyi.godt.feature_0.3.1.202112170011.jar" id="io.github.zshongyi.godt.feature" version="0.3.1.202112170011">
       <category name="GoDT"/>
    </feature>
    <category-def name="GoDT" label="Development Tooling"/>

@@ -43,7 +43,7 @@ public class GoToolChain {
 		}
 
 		String goBinary = GoEnvPreferencePlugin.getPlugin().getPreferenceStore()
-				.getString(GoEnvPreferenceConstants.GO_PATH);
+				.getString(GoEnvPreferenceConstants.GO_BINARY_PATH);
 
 		commands.add(0, goBinary);
 		ProcessBuilder builder = new ProcessBuilder(commands);

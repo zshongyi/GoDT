@@ -3,15 +3,19 @@
  */
 package io.github.zshongyi.godt.editor.lsp4e.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
 import org.eclipse.lsp4e.server.StreamConnectionProvider;
 import org.eclipse.swt.widgets.Display;
 
+import io.github.zshongyi.godt.common.preference.GoEnvPreferenceConstants;
+import io.github.zshongyi.godt.common.preference.GoEnvPreferencePlugin;
 import io.github.zshongyi.godt.editor.preference.GoplsPreferenceConstants;
 import io.github.zshongyi.godt.editor.preference.GoplsPreferencePage;
 import io.github.zshongyi.godt.editor.preference.GoplsPreferencePlugin;
@@ -37,6 +41,27 @@ public class GoplsStreamConnectionProvider extends ProcessStreamConnectionProvid
 		commands.add("-vv");
 		setCommands(commands);
 
+	}
+
+	@Override
+	protected ProcessBuilder createProcessBuilder() {
+		ProcessBuilder processBuilder = super.createProcessBuilder();
+		Map<String, String> env = processBuilder.environment();
+		Boolean addGoPath = GoplsPreferencePlugin.getPlugin().getPreferenceStore()
+				.getBoolean(GoplsPreferenceConstants.GODT_ADDGOPATH);
+		String goBinaryPath = GoEnvPreferencePlugin.getPlugin().getPreferenceStore()
+				.getString(GoEnvPreferenceConstants.GO_BINARY_PATH);
+		if (Boolean.TRUE.equals(!addGoPath || goBinaryPath == null) || goBinaryPath.isBlank()) {
+			return processBuilder;
+		}
+		String goPath = new File(goBinaryPath).getParent();
+		for (String path : env.get("PATH").split(File.pathSeparator)) {
+			if (goPath.equals(path)) {
+				return processBuilder;
+			}
+		}
+		env.put("PATH", String.format("%s%s%s", goPath, File.pathSeparator, env.get("PATH")));
+		return processBuilder;
 	}
 
 	@Override
