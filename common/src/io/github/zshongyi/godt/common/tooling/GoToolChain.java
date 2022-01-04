@@ -22,6 +22,10 @@ import io.github.zshongyi.godt.common.ui.consoles.GoToolChainConsole;
  */
 public class GoToolChain {
 
+	private GoToolChain() {
+
+	}
+
 	public static boolean exec(IProject project, String[] commands) {
 		return exec(project, commands, false);
 	}
@@ -31,10 +35,10 @@ public class GoToolChain {
 	}
 
 	public static boolean exec(IProject project, String[] commands, boolean clearConsole) {
-		return exec(project, new ArrayList<String>(Arrays.asList(commands)), clearConsole);
+		return exec(project, new ArrayList<>(Arrays.asList(commands)), clearConsole);
 	}
 
-	public static boolean exec(IProject project, List<String> commands, boolean clearConsole) {
+	public static synchronized boolean exec(IProject project, List<String> commands, boolean clearConsole) {
 
 		GoToolChainConsole.bindProject(project);
 

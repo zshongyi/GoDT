@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
-import org.eclipse.lsp4e.server.StreamConnectionProvider;
 import org.eclipse.swt.widgets.Display;
 
 import io.github.zshongyi.godt.common.preference.GoEnvPreferenceConstants;
@@ -24,7 +23,7 @@ import io.github.zshongyi.godt.editor.preference.GoplsPreferencePlugin;
  * @author zshongyi
  *
  */
-public class GoplsStreamConnectionProvider extends ProcessStreamConnectionProvider implements StreamConnectionProvider {
+public class GoplsStreamConnectionProvider extends ProcessStreamConnectionProvider {
 
 	/**
 	 * 

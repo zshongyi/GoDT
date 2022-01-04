@@ -24,6 +24,10 @@ import org.eclipse.ui.console.MessageConsoleStream;
  */
 public class GoToolChainConsole {
 
+	private GoToolChainConsole() {
+
+	}
+
 	private static final String GO_TOOL_CHAIN_CONSOLE = "Go Tool Chain";
 	protected static final String ATTRIBUTE_PROJECT = "project";
 
@@ -42,6 +46,8 @@ public class GoToolChainConsole {
 		consoleManager.addConsoles(new IConsole[] { console });
 		console.setConsoleAutoScrollLock(true);
 		console.addPatternMatchListener(new GoToolChainConsolePatternMatchListener());
+		getConsoleStdout(); // 有效避免在线程中执行导致的线程阻塞
+		getConsoleStdErr(); // 同上
 		return console;
 	}
 
@@ -77,7 +83,7 @@ public class GoToolChainConsole {
 	private static void output(MessageConsoleStream messageConsoleStream, InputStream inputStream) {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		String str = null;
-		while (true) {
+		while (messageConsoleStream != null) {
 			try {
 				str = bufferedReader.readLine();
 				if (str != null)
