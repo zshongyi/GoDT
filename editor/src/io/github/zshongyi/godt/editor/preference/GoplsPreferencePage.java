@@ -107,12 +107,7 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 	}
 
 	public static String getBinaryName() {
-		String goplsBinary = "gopls";
-		String os = System.getProperty("os.name");
-		if (os.toLowerCase().startsWith("win")) {
-			goplsBinary = "gopls.exe";
-		}
-		return goplsBinary;
+		return "gopls" + (System.getProperty("os.name").toLowerCase().startsWith("win") ? ".exe" : "");
 	}
 
 }
