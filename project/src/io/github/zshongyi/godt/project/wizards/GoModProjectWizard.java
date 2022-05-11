@@ -6,10 +6,13 @@ package io.github.zshongyi.godt.project.wizards;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+import io.github.zshongyi.godt.common.preference.GoEnvPreferenceConstants;
+import io.github.zshongyi.godt.common.preference.GoEnvPreferencePlugin;
 import io.github.zshongyi.godt.common.tooling.GoToolChain;
 import io.github.zshongyi.godt.project.builder.GodtNature;
 import io.github.zshongyi.godt.project.ui.icons.Icons;
@@ -31,6 +34,14 @@ public class GoModProjectWizard extends BasicNewProjectResourceWizard {
 	@Override
 	public boolean performFinish() {
 		boolean result = super.performFinish();
+
+		
+		final String goBinary = GoEnvPreferencePlugin.getPlugin().getPreferenceStore()
+				.getString(GoEnvPreferenceConstants.GO_BINARY_PATH);
+		if (goBinary.isBlank()) {
+			MessageDialog.openError(null, GoEnvPreferenceConstants.TTL_CANTFINDGO, GoEnvPreferenceConstants.MSG_PLSINSTALLGO);
+			return result &= false;
+		}
 
 		IProject newProject = getNewProject();
 
