@@ -46,8 +46,8 @@ public class GoToolChainConsole {
 		consoleManager.addConsoles(new IConsole[] { console });
 		console.setConsoleAutoScrollLock(true);
 		console.addPatternMatchListener(new GoToolChainConsolePatternMatchListener());
-		getConsoleStdout(); // 有效避免在线程中执行导致的线程阻塞
-		getConsoleStdErr(); // 同上
+		getConsoleStdout(); // 有效避免在线程中执行导致的线程阻塞 ;Effectively avoid thread blocking caused by execution in threads
+		getConsoleStdErr(); // 同上 ;ditto
 		return console;
 	}
 

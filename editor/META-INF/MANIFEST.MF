@@ -19,4 +19,5 @@ Require-Bundle: org.eclipse.tm4e.registry,
  org.eclipse.ui.intro;bundle-version="3.6.300",
  org.eclipse.osgi,
  org.eclipse.core.runtime;bundle-version="3.23.0",
- io.github.zshongyi.godt.common;bundle-version="0.2.0"
+ io.github.zshongyi.godt.common;bundle-version="0.2.0",
+ org.apache.commons.io

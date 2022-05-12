@@ -3,30 +3,30 @@
  */
 package io.github.zshongyi.godt.editor.preference;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.lsp4e.LSPEclipseUtils;
-import org.eclipse.lsp4e.LanguageServiceAccessor;
-import org.eclipse.lsp4j.services.LanguageServer;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import io.github.zshongyi.godt.editor.lsp4e.server.GoplsStreamConnectionProvider;
 import io.github.zshongyi.godt.editor.ui.Messages;
+import io.github.zshongyi.godt.common.ui.ErrorOnValidateBinary;
+import io.github.zshongyi.godt.common.ui.FFEditor;
+import io.github.zshongyi.godt.common.auxiliary.Utils;
 
 /**
  * @author zshongyi
  *
  */
 public class GoplsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+
+	private static class GoplsFFEditor extends FFEditor {
+		private GoplsFFEditor(String name, String labelText, boolean enforceAbsolute, Composite parent, FieldEditorPreferencePage fepp) {
+			super(name, labelText, enforceAbsolute, parent, fepp, GoplsPreferenceConstants.VERSION_PATTERN, 
+					new ErrorOnValidateBinary("File error", "Not valid gopls executable."));
+		}
+	}
 
 	/**
 	 * 
@@ -45,48 +45,18 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 	@Override
 	protected void createFieldEditors() {
 
-		FileFieldEditor goplsPath = new FileFieldEditor(GoplsPreferenceConstants.GOPLS_PATH, Messages.goplsPathLabel,
-				true, getFieldEditorParent()) {
+		FileFieldEditor goplsPath = new GoplsFFEditor(GoplsPreferenceConstants.GOPLS_PATH, Messages.goplsPathLabel, 
+				true, getFieldEditorParent(), this);
 
-			@Override
-			protected void fireValueChanged(String property, Object oldValue, Object newValue) {
-				super.fireValueChanged(property, oldValue, newValue);
-				String filePath = newValue.toString();
-				if (!filePath.equals("")) {
-					ProcessBuilder processBuilder = new ProcessBuilder();
-					processBuilder.command(filePath, "version");
-					try {
-						Process process = processBuilder.start();
-						BufferedReader bufferedReader = new BufferedReader(
-								new InputStreamReader(process.getInputStream()));
-						String firstLine = bufferedReader.readLine();
-						Pattern pattern = Pattern.compile("^golang.org/x/tools/gopls v([0-9]+\\.){2}[0-9]+");
-						Matcher matcher = pattern.matcher(firstLine);
-						if (matcher.find()) {
-							setValid(true);
-						} else {
-							MessageDialog.openError(null, "Illegal File", "Not an available gopls binary file.");
-							setValid(false);
-						}
-					} catch (IOException e) {
-						MessageDialog.openError(null, "Illegal File", e.getMessage());
-						e.printStackTrace();
-						setValid(false);
-					}
-				} else {
-					setValid(true);
-				}
-				refreshValidState();
-			}
-		};
-
-		goplsPath.setFileExtensions(new String[] { getBinaryName() });
+		goplsPath.setFileExtensions(new String[] { Utils.getOsBinaryName("gopls") });
 		this.addField(goplsPath);
 
 		BooleanFieldEditor enableGodtDeclaration = new BooleanFieldEditor(GoplsPreferenceConstants.GODT_DECLARATION,
 				Messages.enableGodtDeclarationLabel, getFieldEditorParent());
 		this.addField(enableGodtDeclaration);
 
+// TODO try to understand this code below. is it safe to remove or is it here to stay in some other form
+/*
 		BooleanFieldEditor addGoPath = new BooleanFieldEditor(GoplsPreferenceConstants.GODT_ADDGOPATH,
 				Messages.addGoPathBeforeRunGopls, getFieldEditorParent()) {
 			@Override
@@ -101,18 +71,33 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 				}
 			}
 		};
-
 		this.addField(addGoPath);
+*/
 
+		getGoplsBinaryPath();
 	}
 
-	public static String getBinaryName() {
-		String goplsBinary = "gopls";
-		String os = System.getProperty("os.name");
-		if (os.toLowerCase().startsWith("win")) {
-			goplsBinary = "gopls.exe";
+	public static String getGoplsBinaryPath() {
+		String goplsBinaryPath = GoplsPreferencePlugin.getPlugin().getPreferenceStore()
+				.getString(GoplsPreferenceConstants.GOPLS_PATH);
+		Utils.DEBUG("GOPLS 1:" + goplsBinaryPath);
+		// if some path was set in preference page and passed validation return that
+		if (Utils.checkBinary(goplsBinaryPath)) return goplsBinaryPath;
+
+		goplsBinaryPath = Utils.getOsBinaryName("gopls");
+		goplsBinaryPath = Utils.findBinary(goplsBinaryPath);
+		Utils.DEBUG("GOPLS 2:" + goplsBinaryPath);
+		if (goplsBinaryPath != null) {
+			if (!Utils.validateBinary(goplsBinaryPath, GoplsPreferenceConstants.VERSION_PATTERN, null)) {
+				goplsBinaryPath = null;
+			} else {
+				GoplsPreferencePlugin.getPlugin().getPreferenceStore()
+					.setDefault(GoplsPreferenceConstants.GOPLS_PATH, goplsBinaryPath);
+				GoplsPreferencePlugin.getPlugin().getPreferenceStore()
+					.setValue(GoplsPreferenceConstants.GOPLS_PATH, goplsBinaryPath);
+			}
 		}
-		return goplsBinary;
-	}
 
+		return goplsBinaryPath;
+	}
 }

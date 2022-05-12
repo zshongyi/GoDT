@@ -12,3 +12,5 @@ Automatic-Module-Name: io.github.zshongyi.godt.project
 Bundle-RequiredExecutionEnvironment: JavaSE-16
 Export-Package: io.github.zshongyi.godt.project.builder,
  io.github.zshongyi.godt.project.ui.widgets
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: io.github.zshongyi.godt.common.auxiliary.Activator
