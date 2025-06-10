@@ -1,5 +1,6 @@
+
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc. and others.
+ * Copyright (c) 2016, 2023 Red Hat Inc. and others.
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -14,6 +15,14 @@
  *******************************************************************************/
 package io.github.zshongyi.godt.editor.lsp4e.cilent.operations.declaration;
 
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.lsp4e.LSPEclipseUtils;
@@ -21,13 +30,8 @@ import org.eclipse.lsp4e.LanguageServerPlugin;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.config.IIntroURL;
 import org.eclipse.ui.intro.config.IntroURLFactory;
-
-import io.github.zshongyi.godt.editor.ui.Messages;
 
 /**
  * Modify according to source file
@@ -38,34 +42,23 @@ import io.github.zshongyi.godt.editor.ui.Messages;
  */
 public class LSBasedHyperlink implements IHyperlink {
 
-	private final String labelPrefix;
+	private static final String DASH_SEPARATOR = " - "; //$NON-NLS-1$
 	private final Either<Location, LocationLink> location;
 	private final IRegion highlightRegion;
+	private final String locationType;
 
-	public LSBasedHyperlink(String labelPrefix, Either<Location, LocationLink> location, IRegion highlightRegion) {
-		this.labelPrefix = labelPrefix;
+	public LSBasedHyperlink(Either<Location, LocationLink> location, IRegion highlightRegion, String locationType) {
 		this.location = location;
 		this.highlightRegion = highlightRegion;
+		this.locationType = locationType;
 	}
 
-	public LSBasedHyperlink(Either<Location, LocationLink> location, IRegion linkRegion) {
-		this(Messages.openDeclarationLabel, location, linkRegion);
+	public LSBasedHyperlink(Location location, IRegion linkRegion, String locationType) {
+		this(Either.forLeft(location), linkRegion, locationType);
 	}
 
-	public LSBasedHyperlink(String labelPrefix, Location location, IRegion linkRegion) {
-		this(labelPrefix, Either.forLeft(location), linkRegion);
-	}
-
-	public LSBasedHyperlink(Location location, IRegion linkRegion) {
-		this(Messages.openDeclarationLabel, location, linkRegion);
-	}
-
-	public LSBasedHyperlink(String labelPrefix, LocationLink locationLink, IRegion linkRegion) {
-		this(labelPrefix, Either.forRight(locationLink), linkRegion);
-	}
-
-	public LSBasedHyperlink(LocationLink locationLink, IRegion linkRegion) {
-		this(Messages.openDeclarationLabel, locationLink, linkRegion);
+	public LSBasedHyperlink(LocationLink locationLink, IRegion linkRegion, String locationType) {
+		this(Either.forRight(locationLink), linkRegion, locationType);
 	}
 
 	@Override
@@ -84,8 +77,6 @@ public class LSBasedHyperlink implements IHyperlink {
 	}
 
 	/**
-	 *
-	 * @return
 	 * @noreference test only
 	 */
 	public Either<Location, LocationLink> getLocation() {
@@ -94,32 +85,26 @@ public class LSBasedHyperlink implements IHyperlink {
 
 	@Override
 	public void open() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		IWorkbenchPage activatePage = window == null ? null : window.getActivePage();
-
 		if (location.isLeft()) {
-			LSPEclipseUtils.openInEditor(location.getLeft(), activatePage);
+			LSPEclipseUtils.openInEditor(location.getLeft());
 		} else {
-			LSPEclipseUtils.openInEditor(location.getRight(), activatePage);
+			LSPEclipseUtils.openInEditor(location.getRight());
 		}
 	}
 
 	private String getLabel() {
-		if (this.location != null) {
-			String uri = this.location.isLeft() ? this.location.getLeft().getUri()
-					: this.location.getRight().getTargetUri();
-			if (uri != null) {
-				if (uri.startsWith(LSPEclipseUtils.FILE_URI) && uri.length() > LSPEclipseUtils.FILE_URI.length()) {
-					return getFileBasedLabel(uri);
-				} else if (uri.startsWith(LSPEclipseUtils.INTRO_URL)) {
-					return getIntroUrlBasedLabel(uri);
-				} else if (uri.startsWith("http")) {
-					return getHttpBasedLabel(uri);
-				}
+		String uri = this.location.isLeft() ? this.location.getLeft().getUri()
+				: this.location.getRight().getTargetUri();
+		if (uri != null) {
+			if (uri.startsWith(LSPEclipseUtils.FILE_URI) && uri.length() > LSPEclipseUtils.FILE_URI.length()) {
+				return getFileBasedLabel(uri);
+			} else if (uri.startsWith(LSPEclipseUtils.INTRO_URL)) {
+				return getIntroUrlBasedLabel(uri);
 			}
+			return getGenericUriBasedLabel(uri);
 		}
 
-		return labelPrefix;
+		return locationType;
 	}
 
 	private String getIntroUrlBasedLabel(String uri) {
@@ -128,22 +113,34 @@ public class LSBasedHyperlink implements IHyperlink {
 			if (introUrl != null) {
 				String label = introUrl.getParameter("label"); //$NON-NLS-1$
 				if (label != null) {
-					return labelPrefix + " - " + label; //$NON-NLS-1$
+					return locationType + DASH_SEPARATOR + label;
 				}
 			}
 		} catch (Exception e) {
 			LanguageServerPlugin.logError(e.getMessage(), e);
 		}
 
-		return labelPrefix;
+		return locationType;
 	}
 
-	private String getHttpBasedLabel(String uri) {
-		return labelPrefix + " - " + uri; //$NON-NLS-1$
+	private String getGenericUriBasedLabel(String uri) {
+		return locationType + DASH_SEPARATOR + uri;
 	}
 
-	private String getFileBasedLabel(String uri) {
-		return labelPrefix + " - " + uri.substring(LSPEclipseUtils.FILE_URI.length()); //$NON-NLS-1$
+	private String getFileBasedLabel(String uriStr) {
+		URI uri = URI.create(uriStr);
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IFile[] files = workspaceRoot.findFilesForLocationURI(uri);
+		if (files.length == 1 && files[0].getProject() != null) {
+			IFile file = files[0];
+			IPath containerPath = file.getParent().getProjectRelativePath();
+			return locationType + DASH_SEPARATOR + file.getName() + DASH_SEPARATOR + file.getProject().getName()
+					+ (containerPath.isEmpty() ? "" : IPath.SEPARATOR + containerPath.toString()); //$NON-NLS-1$
+		}
+		Path path = Paths.get(uri);
+		return locationType + DASH_SEPARATOR + path.getFileName()
+				+ (path.getParent() == null || path.getParent().getParent() == null ? "" //$NON-NLS-1$
+						: DASH_SEPARATOR + path.toString());
 	}
 
 }
