@@ -22,7 +22,6 @@ import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.lsp4e.LanguageServerPlugin;
 import org.eclipse.lsp4e.LanguageServers;
 import org.eclipse.lsp4e.internal.Pair;
-import org.eclipse.lsp4e.operations.declaration.LSBasedHyperlink;
 import org.eclipse.lsp4e.ui.Messages;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
@@ -76,7 +75,7 @@ public class GodtOpenDeclarationHyperlinkDetector extends AbstractHyperlinkDetec
 					.collectAll(ls -> ls.getTextDocumentService()
 							.implementation(LSPEclipseUtils.toImplementationParams(params))
 							.thenApply(l -> Pair.of(Messages.implementationHyperlinkLabel, l)));
-			LanguageServers.addAll(definitions, typeDefinitions)
+			LanguageServers.addAll(definitions, declarations)
 					// .addAll(LanguageServers.addAll(LanguageServers.addAll(definitions,
 					// declarations), typeDefinitions), implementations)
 					.get(1500, TimeUnit.MILLISECONDS).stream()
