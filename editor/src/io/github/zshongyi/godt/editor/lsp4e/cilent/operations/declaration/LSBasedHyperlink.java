@@ -113,7 +113,7 @@ public class LSBasedHyperlink implements IHyperlink {
 					return getFileBasedLabel(uri);
 				} else if (uri.startsWith(LSPEclipseUtils.INTRO_URL)) {
 					return getIntroUrlBasedLabel(uri);
-				} else if (uri.startsWith(LSPEclipseUtils.HTTP)) {
+				} else if (uri.startsWith("http")) {
 					return getHttpBasedLabel(uri);
 				}
 			}
