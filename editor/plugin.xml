@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+    <extension 
+         point="org.eclipse.core.contenttype.contentTypes"> 
+      <content-type
+          id="io.github.zshongyi.godt.gosourcefile"
+          name="Go"
+          file-extensions="go"
+          base-type="org.eclipse.core.runtime.text"
+          default-charset="UTF-8">
+      </content-type>
+   </extension>
    <extension
          id="io.github.zshongyi.godt.GoSourceEditor"
          name="Go Source Editor"
@@ -9,16 +19,6 @@
           contentTypeId="io.github.zshongyi.godt.gosourcefile"
           editorId="org.eclipse.ui.genericeditor.GenericEditor">
       </editorContentTypeBinding>
-   </extension>
-    <extension 
-    	point="org.eclipse.core.contenttype.contentTypes"> 
-        <content-type
-            id="io.github.zshongyi.godt.gosourcefile"
-            name="Go"
-            file-extensions="go"
-            base-type="org.eclipse.core.runtime.text"
-            default-charset="UTF-8">
-        </content-type>
    </extension>
    <extension
          point="org.eclipse.tm4e.registry.grammars">
@@ -51,8 +51,7 @@
       <server
             class="io.github.zshongyi.godt.editor.lsp4e.server.GoplsStreamConnectionProvider"
             id="io.github.zshongyi.godt.editor.lsp4e.server.gopls"
-            label="Go Language Server"
-            launcherBuilder="io.github.zshongyi.godt.editor.lsp4e.server.GoPatchLauncherBuilder">
+            label="Go Language Server">
       </server>
       <contentTypeMapping
             contentType="io.github.zshongyi.godt.gosourcefile"
