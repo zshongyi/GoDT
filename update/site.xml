@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+<<<<<<< Upstream, based on 5e9b46e5a828a2dc310684f639984ff2c33df6bb
    <feature url="features/io.github.zshongyi.godt.feature_0.3.1.202201050003.jar" id="io.github.zshongyi.godt.feature" version="0.3.1.202201050003">
+=======
+   <feature url="features/io.github.zshongyi.godt.feature_0.3.2.202506112220.jar" id="io.github.zshongyi.godt.feature" version="0.3.2.202506112220">
+>>>>>>> abb90ad Rebuild update site
       <category name="GoDT"/>
    </feature>
    <category-def name="GoDT" label="Development Tooling"/>
