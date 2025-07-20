@@ -11,7 +11,7 @@ public class TidyHandler extends GoModCommandsHandler {
 
 	@Override
 	public String[] getModCommandParameters() {
-		return new String[] { "tidy" };
+		return new String[] { "tidy", "-v" };
 	}
 
 }

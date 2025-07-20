@@ -165,7 +165,7 @@ public class GoToolChain {
 			return;
 		}
 		if (!runningLock.isLocked()) {
-			processNextJob();
+			new Thread(GoToolChain::processNextJob).start();
 		}
 	}
 

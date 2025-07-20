@@ -4,7 +4,7 @@ public class VendorHandler extends GoModCommandsHandler {
 
 	@Override
 	public String[] getModCommandParameters() {
-		return new String[] { "vendor" };
+		return new String[] { "vendor", "-v" };
 	}
 
 }
