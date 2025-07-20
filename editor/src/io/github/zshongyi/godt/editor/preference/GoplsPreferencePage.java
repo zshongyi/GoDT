@@ -13,13 +13,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.lsp4e.LSPEclipseUtils;
-import org.eclipse.lsp4e.LanguageServiceAccessor;
-import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import io.github.zshongyi.godt.editor.lsp4e.server.GoplsStreamConnectionProvider;
 import io.github.zshongyi.godt.editor.ui.Messages;
 
 /**
@@ -87,22 +83,23 @@ public class GoplsPreferencePage extends FieldEditorPreferencePage implements IW
 				Messages.enableGodtDeclarationLabel, getFieldEditorParent());
 		this.addField(enableGodtDeclaration);
 
-		BooleanFieldEditor addGoPath = new BooleanFieldEditor(GoplsPreferenceConstants.GODT_ADDGOPATH,
-				Messages.addGoPathBeforeRunGopls, getFieldEditorParent()) {
-			@Override
-			protected void fireStateChanged(String property, boolean oldValue, boolean newValue) {
-				super.fireStateChanged(property, oldValue, newValue);
-				for (LanguageServer languageServer : LanguageServiceAccessor.getActiveLanguageServers(
-						capabilities -> LSPEclipseUtils.hasCapability(capabilities.getWorkspaceSymbolProvider()))) {
-					// FIXME: not work
-					if (languageServer instanceof GoplsStreamConnectionProvider) {
-						languageServer.shutdown();
-					}
-				}
-			}
-		};
-
-		this.addField(addGoPath);
+// TODO: We need to test on the macOS system whether the current version can load gopls normally with this option disabled
+//		BooleanFieldEditor addGoPath = new BooleanFieldEditor(GoplsPreferenceConstants.GODT_ADDGOPATH,
+//				Messages.addGoPathBeforeRunGopls, getFieldEditorParent()) {
+//			@Override
+//			protected void fireStateChanged(String property, boolean oldValue, boolean newValue) {
+//				super.fireStateChanged(property, oldValue, newValue);
+//				for (LanguageServer languageServer : LanguageServiceAccessor.getActiveLanguageServers(
+//						capabilities -> LSPEclipseUtils.hasCapability(capabilities.getWorkspaceSymbolProvider()))) {
+//					// FIXME: not work
+//					if (languageServer instanceof GoplsStreamConnectionProvider) {
+//						languageServer.shutdown();
+//					}
+//				}
+//			}
+//		};
+//
+//		this.addField(addGoPath);
 
 	}
 

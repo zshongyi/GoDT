@@ -41,28 +41,28 @@ public class GodtBuilder extends IncrementalProjectBuilder {
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		getProject().deleteMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 		String[] command = new String[] { "clean", "-i", "-x", "-cache", "-testcache" };
-		GoToolChain.exec(getProject(), command, true);
+		GoToolChain.asyncExecute(getProject(), command);
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 	}
 
 	private void clearBuild(IProgressMonitor monitor) throws CoreException {
 		getProject().deleteMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 		String[] command = new String[] { "build", "-v", "-x", };
-		GoToolChain.exec(getProject(), command, true);
+		GoToolChain.asyncExecute(getProject(), command);
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 	}
 
 	protected void fullBuild(final IProgressMonitor monitor) throws CoreException {
 		getProject().deleteMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 		String[] command = new String[] { "build", "-v", "-a", "-x", };
-		GoToolChain.exec(getProject(), command, true);
+		GoToolChain.asyncExecute(getProject(), command);
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 	}
 
 	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
 		getProject().deleteMarkers(MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 		String[] command = new String[] { "build", "-v", "-x", };
-		GoToolChain.exec(getProject(), command, true);
+		GoToolChain.asyncExecute(getProject(), command);
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 	}
 

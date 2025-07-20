@@ -34,7 +34,7 @@ public class GoModProjectWizard extends BasicNewProjectResourceWizard {
 
 		IProject newProject = getNewProject();
 
-		result &= GoToolChain.exec(newProject, new String[] { "mod", "init", newProject.getName() });
+		result &= GoToolChain.syncExecute(newProject, new String[] { "mod", "init", newProject.getName() });
 		try {
 			IProjectDescription projectDescription = newProject.getDescription();
 			String[] prevNatures = projectDescription.getNatureIds();

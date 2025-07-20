@@ -22,7 +22,7 @@ public abstract class GoModCommandsHandler extends AbstractHandler {
 		if (selection instanceof IStructuredSelection) {
 			File selectedFile = (File) ((IStructuredSelection) selection).getFirstElement();
 			IProject project = selectedFile.getProject();
-			GoToolChain.exec(project, getGoParameters(), true);
+			GoToolChain.asyncExecute(project, getGoParameters());
 		}
 
 		return null;
